@@ -1,0 +1,35 @@
+name: CI Calidad y Seguridad - IT Incident Hub
+
+on:
+  push:
+    branches: [ "main", "feature/**", "fix/**", "refactor/**" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validacion-integral:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout del código
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar entorno Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 3. Instalar dependencias y auditar Backend
+        working-directory: ./backend
+        run: |
+          npm install
+          npm audit --audit-level=critical || true
+
+      - name: 4. Instalar dependencias y Compilar (Build) Frontend
+        working-directory: ./frontend
+        run: |
+          npm install
+          npm run build
+
+      - name: 5. Ejecutar Pruebas Automatizadas
+        run: node --test tests/incident.test.js

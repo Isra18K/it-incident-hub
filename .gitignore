@@ -1,10 +1,10 @@
+@"
 node_modules/
-npm-debug.log*
-.env
-.env.local
-.DS_Store
-Thumbs.db
-.vscode/
 dist/
 build/
+.env
+.env.*
+!.env.example
 *.log
+.DS_Store
+"@ | Set-Content -Path ".gitignore" -Encoding UTF8
